@@ -144,7 +144,7 @@ the 4 possible combinations of outputs (OFF/OFF, ON/ON, ON/OFF, OFF/ON).
 
 # circuit analysis
 
-[View schematic as a PDF here.](file:circuit-schematic.pdf)
+[View schematic as a PDF here.](circuit-schematic.pdf)
 
 With PEK entering on the left and G and Y exiting on the right the circuitry
 can be divided into 4 quadrants. The bottom half mirrors the top, doing everything
