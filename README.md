@@ -26,9 +26,9 @@ open (no heating active). The difficulty with this is that when the heating
 is active and the circuit is closed there is no power available. So the unit
 must run from its battery
 until the heating turns off. But if sufficient heat is required the heat will
-run long enough that the battery in the unit runs down and it either must turn
-off the heat. If it does not then it will power down due to low battery and that
-opens the circuit also.
+run long enough that the battery in the unit runs down and it must turn off
+the heat to charge. If it does not then it will power down due to low
+battery and that opens the circuit also.
 
 Also for some systems the trick circuit to draw a little power without presenting
 a closed circuit to turn on the heat still draws enough current to cause the
@@ -40,11 +40,11 @@ as to create some quality perception problems in the public.
 ### EcoBee’s first Wi-Fi capable thermostat
 
 EcoBee solved this in a different ways. Their first method was to put all the
-smarts of the thermostat in a large box which was mounted by the HVAC system.
+smarts of the thermostat in a large box which was mounted near the HVAC system.
 Due to its proximity this box could be connected to the HVAC with many wires,
 sufficient to include two wires for power and multiple signal wires for heating,
-cooling, fan, etc. This system required 4 wires in the wall to the thermostat
-and send power over two, with two-way communications over the other two. The
+cooling, fan, etc. This system required four wires in the wall to the thermostat
+and send power over two with two-way communications over the other two. The
 thermostat was little more than a remote control, display and temperature
 sensor.
 
@@ -54,21 +54,22 @@ This teardown is of (what I believe to be) EcoBee's second method. This method
 moves the smarts back into the wall thermostat. The issue then is that if
 the wiring for the thermostat only has sufficient wires for control how
 can the power be sent? So a solution is needed for systems which do not
-provide constant power nor extra wires in the wall which can be used
-to send constant power.
+provide a constant power circuit nor extra wires in the wall which can
+be used to send constant power.
 
 In a system with two circuits (three wires) in the wall it can send power
 over two of the wires and control the two circuits using only the
-third wire. This may be needed in a system which only has heat
-and fan control. It is also shown as being able to send power
-and control three circuits over the four wires in the wall. This is useful
-for a system which heat, A/C and fan control.
+third wire. This may be needed in a system which only has only cooling
+and fan control or heat and fan control. It is also shown as being
+able to send power and control three circuits over the four wires
+in the wall. This is useful for a system with heat, A/C and fan control.
 
-They call this four-wire system their Power Extender Kit (PEK).
+They call this (nominally) four-wire system their Power Extender Kit (PEK).
 
 ## Electrical background
 
-In most home HVAC systems signaling is done with 24VAC (low voltage, rms) ladder
+In most home HVAC systems signaling is done with
+24VAC<sub>rms</sub> (low voltage) ladder
 logic. There is a hot wire common across all circuits, often called
 R. There are one or more other wires which are labeled with the
 function they control. Connecting any one of these to the
@@ -90,14 +91,16 @@ the usual method.
 
 ## How it works
 
-A normal connection is expressed as having the thermostat connected to the
+A normal connection for 3 circuits and no constant power for thermostat use
+is expressed as having the thermostat connected to the
 (4) wires in the wall which are then connected to the HVAC system.
 
 HVAC <-(x4 wall)-> thermostat
 
-This system involves putting a demultiplexer between the HVAC and the wall
+This PEK system of adding the constant power (C) involves putting a
+demultiplexer between the HVAC and the wall
 wires as well as connecting a 24VAC supply (C) from the HVAC to the demultiplexer
-(PEK). This can be done as the PEK is located adjacent (often inside) the HVAC
+(PEK). This can be done as the PEK is located adjacent to (often inside) the HVAC
 and so additional wiring can be easily added. It requires a source of constant
 power return (C) in the HVAC system, but one is always available. It available
 on a terminal in any HVAC system made for decades now. The wiring then
@@ -114,7 +117,7 @@ Although there is no separate KEP nor 5 wire bundle on the thermostat end.
 
 ## PEK operation
 
-The first obvious thing when looking at the schematic is that the third circuit
+The most obvious thing when looking at the schematic is that the third circuit
 labelled COOL here (but can be used for anything) is not involved in any way.
 It's not clear why it is even part of the PEK. It does physically simplify
 the wiring on the HVAC end by bringing the wall wires to a single spot in
@@ -129,13 +132,16 @@ It is very difficult to
 envision a system with more than 3 control wires (FAN, HEAT, COOL) but no C
 wire.
 
-Aside from any uninvolved wires the system is extracting two power wires (H, C)
-and two control signals (G, Y) from three wires (H, C, PEK). H and C are used
-but unmodified so it simply squeezes G and Y on a single wire PEK.
+Aside from any uninvolved wires the system is extracting two power wires (R, C)
+and two control signals (G, Y) from three wires (H, C, PEK). R and C are used
+but unmodified so it simply squeezes G and Y onto a single wire PEK.
 
-For G and Y any AC signal at all activates the function. But on PEK the presence
-of positive voltages turns on G (FAN) and negative voltages turns on Y (HEAT).
-Presenting no voltage at all turns off G and Y. Presenting a full AC signal turns
+For G and Y any AC signal on PEK at all activates the function.
+But on PEK the presence of positive voltages turns on G (FAN)
+and negative voltages turns on Y (HEAT).
+
+Presenting no voltage at all on PEK turns off G and Y.
+Presenting a full AC signal turns
 on G and Y. Presenting just the positive half of an AC signal (positive half-wave
 rectification) turns on only G and presenting just the negative half (negative
 half-wave rectification) turns on only Y. PEK has 4 states (no signal, AC,
@@ -151,8 +157,8 @@ can be divided into 4 quadrants. The bottom half mirrors the top, doing everythi
 the same as the top but for negative voltages. The top is the G circuitry and
 the bottom is the Y circuitry.
 
-The left and right are divided by U1 and U2. The left half circuitry decodes the
-PEK signal
+The left and right side are divided by U1 and U2. The left half circuitry
+decodes the PEK signal
 and the right half generates ladder logic AC signals from the decoded states.
 
 Examining the top left quadrant, D1 rectifies the PEK signal so the positive-going
@@ -190,19 +196,21 @@ only for W.
 This seems like good circuitry. The unit is made well and the design is flexible
 and robust. The circuit presents all possible modes with the only limitation being
 that the output modes cannot be changed more rapidly than perhaps 10 times a second.
-This is more than sufficient fidelity for HVAC control. The circuitry cannot deal
+This is more than sufficient fidelity for HVAC control and higher fidelity control
+using 60Hz AC signaling is difficult regardless. The circuitry cannot deal
 with DC as neither zero-crossing optocouplers nor TRIACs can operate to control
 voltage which does not periodically return to zero. Low control voltage could put
 the control out of spec due to supply ripple although the optocoupler turning on
 below the indicated spec current (5mA) would likely hide this. Latching of the
 TRIAC could also hide this.
 
-The presence of the box could confuse anyone looking to change thermostats later.
+The presence of the PEK could confuse anyone looking to change thermostats later.
 They would have to figure out to look inside the HVAC system to find the PEK box
 and remove it.
 
-The box is well made and includes a nice sheet magnet on it for
-attaching to the inside of a furnace. The spring connectors are actuated well.
+The enclosure is well made and includes a nice sheet magnet on it for
+attaching to the inside of a furnace. The spring connectors are actuated well
+using external pushrods (buttons) on the top of the case.
 The labeling for the wire entry is pretty good.
 
 It would be possible to run an old system which has only R, G and W wires using
